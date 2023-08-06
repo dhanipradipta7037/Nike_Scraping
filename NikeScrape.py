@@ -11,11 +11,13 @@ def main():
         page.goto(url)
         time.sleep(3)
         page.wait_for_load_state("networkidle")
+
         # scroll down
         for x in range(1, 6):
             page.keyboard.press("End")
             print("scrolling", x)
             time.sleep(3)
+
         # scrape link
         items = page.locator('//div[@class="product-card__body"]').all()
         time.sleep(3)
@@ -23,9 +25,9 @@ def main():
             link_url = item.locator('//a[@class="product-card__link-overlay"]').get_attribute('href')
             data_url.append(link_url)
         print(len(data_url))
-
-
         browser.close()
+
+
 
 
 
