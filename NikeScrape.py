@@ -4,30 +4,48 @@ import time
 
 def main():
     with sync_playwright() as p:
+        data_item = []
         data_url = []
         url = 'https://www.nike.com/id/w/new-mens-shoes-3n82yznik1zy7ok'
-        browser = p.chromium.launch(headless=False)
+        browser = p.firefox.launch()
         page = browser.new_page()
         page.goto(url)
         page.wait_for_selector("div#skip-to-products")
-        time.sleep(5)
+        time.sleep(10)
 
         # scroll down
         for x in range(1, 6):
             page.keyboard.press("End")
             print("scrolling", x)
-            time.sleep(2)
+            time.sleep(5)
 
         # scrape link
         items = page.locator('//div[@class="product-card__body"]').all()
-        time.sleep(2)
+        time.sleep(5)
         for item in items:
+            title = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('alt')
             link_url = item.locator('//a[@class="product-card__link-overlay"]').get_attribute('href')
+            price = item.locator('//div[@data-testid="product-price"]').inner_text()
+            image = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('src')
+            data_list = {
+                'Nama Sepatu': title,
+                'Harga Sepatu': price,
+                'Gambar sepatu': image,
+                'link sepatu':link_url
+            }
+            data_item.append(data_list)
             data_url.append(link_url)
 
+        df = pd.DataFrame(data_item)
+        df.to_csv('NIKE_v2.csv', index=False)
+
+        for link in data_url:
+            print(link)
+
         print(len(data_url))
-        for data in data_url:
-            print(data)
+        print('Berhasil')
+
+
 
         # scrape detail item
         # data_item = []
