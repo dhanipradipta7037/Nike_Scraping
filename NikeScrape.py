@@ -7,7 +7,7 @@ def main():
         data_item = []
         data_url = []
         url = 'https://www.nike.com/id/w/new-mens-shoes-3n82yznik1zy7ok'
-        browser = p.firefox.launch()
+        browser = p.chromium.launch()
         page = browser.new_page()
         page.goto(url)
         page.wait_for_selector("div#skip-to-products")
@@ -25,7 +25,7 @@ def main():
         for item in items:
             title = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('alt')
             link_url = item.locator('//a[@class="product-card__link-overlay"]').get_attribute('href')
-            price = item.locator('//div[@data-testid="product-price"]').inner_text()
+            price = item.locator('//div[@data-testid="product-price"]').inner_text().replace(' ','')
             image = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('src')
             data_list = {
                 'Nama Sepatu': title,
@@ -37,7 +37,7 @@ def main():
             data_url.append(link_url)
 
         df = pd.DataFrame(data_item)
-        df.to_csv('NIKE_v2.csv', index=False)
+        df.to_csv('NIKE_v3.csv', index=False)
 
         for link in data_url:
             print(link)
