@@ -23,21 +23,21 @@ def main():
         items = page.locator('//div[@class="product-card__body"]').all()
         time.sleep(5)
         for item in items:
-            title = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('alt')
+            # title = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('alt')
             link_url = item.locator('//a[@class="product-card__link-overlay"]').get_attribute('href')
-            price = item.locator('//div[@data-testid="product-price"]').inner_text().replace(' ','')
-            image = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('src')
+            # price = item.locator('//div[@data-testid="product-price"]').inner_text().replace(' ','')
+            # image = item.locator('//img[@class="product-card__hero-image css-1fxh5tw"]').get_attribute('src')
             data_list = {
-                'Nama Sepatu': title,
-                'Harga Sepatu': price,
-                'Gambar sepatu': image,
+                # 'Nama Sepatu': title,
+                # 'Harga Sepatu': price,
+                # 'Gambar sepatu': image,
                 'link sepatu':link_url
             }
             data_item.append(data_list)
             data_url.append(link_url)
 
         df = pd.DataFrame(data_item)
-        df.to_csv('NIKE_v3.csv', index=False)
+        df.to_csv('NIKE_v4.csv', index=False)
 
         for link in data_url:
             print(link)
